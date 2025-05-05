@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu - Mon Restaurant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8f8;
+      padding-bottom: 60px; /* espace pour la nav bar */
+    }
+
+    .menu-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .menu-item {
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .menu-info {
+      padding: 15px;
+    }
+
+    .menu-info h3 {
+      margin: 0 0 10px;
+      font-size: 1.2em;
+    }
+
+    .menu-info p {
+      margin: 0;
+      color: #555;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: #333;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+
+    .bottom-nav i {
+      font-size: 1.5em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .menu-info h3 {
+        font-size: 1em;
+      }
+
+      .menu-info p {
+        font-size: 0.85em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="menu-container">
+    <div class="menu-item">
+      <img src="https://via.placeholder.com/300x180?text=Pizza+Margherita" alt="Pizza Margherita">
+      <div class="menu-info">
+        <h3>Pizza Margherita</h3>
+        <p>Tomate, mozzarella, basilic frais.</p>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <img src="https://via.placeholder.com/300x180?text=Burger+Maison" alt="Burger Maison">
+      <div class="menu-info">
+        <h3>Burger Maison</h3>
+        <p>Steak haché, cheddar, oignons caramélisés.</p>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <img src="https://via.placeholder.com/300x180?text=Salade+César" alt="Salade César">
+      <div class="menu-info">
+        <h3>Salade César</h3>
+        <p>Poulet grillé, parmesan, croûtons.</p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="#"><i class="fas fa-utensils"></i>Menu</a>
+    <a href="#"><i class="fas fa-user"></i>Profil</a>
+    <a href="#"><i class="fas fa-shopping-cart"></i>Panier</a>
+  </nav>
+
+</body>
+</html>
