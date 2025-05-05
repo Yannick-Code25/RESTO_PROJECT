@@ -95,24 +95,40 @@
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-
+  
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-
-      const utilisateurs = JSON.parse(localStorage.getItem('utilisateurs')) || [];
-
-      const utilisateur = utilisateurs.find(user => user.email === email && user.password === password);
-
-      if (utilisateur) {
-        document.getElementById('message').textContent = `Bienvenue, ${utilisateur.nomComplet} !`;
-        document.getElementById('message').style.color = '#2ecc71'; // vert succès
-      } else {
-        document.getElementById('message').textContent = "Email ou mot de passe incorrect.";
+  
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+  
+        const data = await response.json();
+  
+        if (response.ok) {
+          document.getElementById('message').textContent = data.message;
+          document.getElementById('message').style.color = '#2ecc71';
+          localStorage.setItem('token', data.token); // Enregistre le token
+          // Redirection ou autre action possible ici
+        } else {
+          document.getElementById('message').textContent = data.message;
+          document.getElementById('message').style.color = 'red';
+        }
+  
+      } catch (err) {
+        document.getElementById('message').textContent = 'Erreur réseau.';
         document.getElementById('message').style.color = 'red';
+        console.error(err);
       }
     });
   </script>
+  
 </body>
 </html>
