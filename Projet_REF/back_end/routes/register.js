@@ -32,4 +32,34 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/api/commandes', async (req, res) => {
+  const { produits, total, methodePaiement, utilisateurId } = req.body;
+
+  try {
+    // 1. Ajouter la commande
+    const result = await pool.query(
+      'INSERT INTO commandes (utilisateur_id, total, methode_paiement) VALUES ($1, $2, $3) RETURNING id',
+      [utilisateurId, total, methodePaiement]
+    );
+    
+    const commandeId = result.rows[0].id;
+
+    // 2. Ajouter les produits dans la commande_produits
+    for (const produit of produits) {
+      await pool.query(
+        'INSERT INTO commande_produits (commande_id, plat_id, quantite, prix) VALUES ($1, $2, $3, $4)',
+        [commandeId, produit.id, produit.quantite, produit.prix]
+      );
+    }
+
+    res.status(200).send('Commande enregistrée avec succès');
+  } catch (err) {
+    console.error('Erreur ajout commande:', err);
+    res.status(500).send('Erreur lors de l\'ajout de la commande');
+  }
+});
+
+module.exports = router;
+
+
 module.exports = router;
