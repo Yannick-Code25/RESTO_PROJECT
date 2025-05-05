@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Menu - Mon Restaurant</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background-color: #f8f8f8;
       padding-bottom: 60px;
     }
@@ -24,8 +24,10 @@
       background-color: #fff;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
     }
 
     .menu-item:hover {
@@ -89,46 +91,44 @@
   </style>
 </head>
 <body>
-
   <div class="menu-container">
-    <div class="menu-item">
-      <img src="https://via.placeholder.com/300x180?text=Pizza+Margherita" alt="Pizza Margherita">
+    <a href="detail.html?id=1" class="menu-item">
+      <img src="https://www.aquaportail.com/pictures2112/nourriture.jpg" alt="Pizza Margherita" />
       <div class="menu-info">
         <h3>Pizza Margherita</h3>
         <p>Tomate, mozzarella, basilic frais.</p>
       </div>
-    </div>
+    </a>
 
-    <div class="menu-item">
-      <img src="https://via.placeholder.com/300x180?text=Burger+Maison" alt="Burger Maison">
+    <a href="detail.html?id=2" class="menu-item">
+      <img src="https://th.bing.com/th/id/OIP.bso0W6RUjvIhDlp5Y4TkxAHaE8?cb=iwp1&rs=1&pid=ImgDetMain" alt="Burger Maison" />
       <div class="menu-info">
         <h3>Burger Maison</h3>
         <p>Steak haché, cheddar, oignons caramélisés.</p>
       </div>
-    </div>
+    </a>
 
-    <div class="menu-item">
-      <img src="https://via.placeholder.com/300x180?text=Salade+César" alt="Salade César">
+    <a href="detail.html?id=3" class="menu-item">
+      <img src="https://cdn.pixabay.com/photo/2017/01/22/19/20/salad-2008745_960_720.jpg" alt="Salade César" />
       <div class="menu-info">
         <h3>Salade César</h3>
         <p>Poulet grillé, parmesan, croûtons.</p>
       </div>
-    </div>
+    </a>
   </div>
 
   <nav class="bottom-nav">
     <a href="#"><i class="fas fa-utensils"></i>Menu</a>
     <a href="#"><i class="fas fa-user"></i>Profil</a>
-    <a href="#"><i class="fas fa-shopping-cart"></i>Panier</a>
+    <a href="panier.html"><i class="fas fa-shopping-cart"></i>Panier</a>
   </nav>
 
   <script>
-    // Vérifie si l'utilisateur est connecté (présence du token)
-    const token = localStorage.getItem('token');
+    // Redirection si non connecté
+    const token = localStorage.getItem("token");
     if (!token) {
-      window.location.href = 'login.html';
+      window.location.href = "login.html";
     }
   </script>
-
 </body>
 </html>

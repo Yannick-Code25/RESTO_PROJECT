@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panier</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f8f8;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .panier-item {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .panier-item img {
+        width: 120px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 20px;
+      }
+      .panier-info {
+        flex: 1;
+      }
+      .panier-info h3 {
+        margin: 0 0 10px;
+      }
+      .quantite-input {
+        width: 50px;
+        text-align: center;
+      }
+      .total {
+        font-size: 1.2em;
+        text-align: right;
+        margin-top: 20px;
+      }
+      .btn-valider {
+        display: block;
+        margin: 30px auto;
+        padding: 10px 20px;
+        font-size: 1.1em;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+      }
+      .modal-content h2 {
+        margin-top: 0;
+      }
+      .modal-content label {
+        display: block;
+        margin: 10px 0;
+      }
+      .modal-content button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Mon Panier</h1>
+    <div id="panier-container"></div>
+    <div class="total" id="total"></div>
+    <button class="btn-valider" onclick="ouvrirModal()">
+      Valider la commande
+    </button>
+
+    <!-- Modal -->
+    <div class="modal" id="modalPaiement">
+      <div class="modal-content">
+        <h2>Méthode de paiement</h2>
+        <label
+          ><input type="radio" name="paiement" value="Mobile Money" checked />
+          Mobile Money</label
+        >
+        <label
+          ><input type="radio" name="paiement" value="Espèce" /> Espèce</label
+        >
+        <button onclick="validerPaiement()">Confirmer</button>
+      </div>
+    </div>
+
+    <script>
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+      const container = document.getElementById("panier-container");
+      const totalEl = document.getElementById("total");
+
+      function afficherPanier() {
+        container.innerHTML = "";
+        let total = 0;
+
+        panier.forEach((item, index) => {
+          const prixTotalItem = item.prix * item.quantite;
+          total += prixTotalItem;
+
+          container.innerHTML += `
+          <div class="panier-item">
+            <img src="${item.image}" alt="${item.nom}">
+            <div class="panier-info">
+              <h3>${item.nom}</h3>
+              <p>Prix : ${item.prix} FCFA</p>
+              <label>Quantité : <input class="quantite-input" type="number" min="1" value="${item.quantite}" onchange="changerQuantite(${index}, this.value)" /></label>
+            </div>
+          </div>
+        `;
+        });
+
+        totalEl.textContent = `Total : ${total} FCFA`;
+      }
+
+      function changerQuantite(index, value) {
+        panier[index].quantite = parseInt(value);
+        localStorage.setItem("panier", JSON.stringify(panier));
+        afficherPanier();
+      }
+
+      function ouvrirModal() {
+        document.getElementById("modalPaiement").style.display = "flex";
+      }
+
+      function validerPaiement() {
+        const methode = document.querySelector(
+          'input[name="paiement"]:checked'
+        ).value;
+        const utilisateurId = localStorage.getItem("utilisateurId"); // Vérifie si c'est bien stocké
+        const commande = {
+          produits: panier,
+          total: panier.reduce(
+            (acc, item) => acc + item.prix * item.quantite,
+            0
+          ),
+          methodePaiement: methode,
+          utilisateurId: utilisateurId,
+          date: new Date().toISOString(),
+        };
+
+        // 🔍 Affichage dans la console pour débogage
+        console.log("Commande envoyée au back-end :", commande);
+
+        // 🔍 Affichage dans le HTML pour vérification visuelle
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          `
+    <pre style="background:#eee;padding:10px;border-radius:8px;margin-top:20px;">
+      <strong>Données envoyées au back-end :</strong>\n${JSON.stringify(
+        commande,
+        null,
+        2
+      )}
+    </pre>
+  `
+        );
+
+        fetch("/api/commandes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(commande),
+        }).then((response) => {
+          if (response.ok) {
+            alert("Commande enregistrée avec succès !");
+            localStorage.removeItem("panier");
+            window.location.href = "menu.html";
+          } else {
+            alert("Erreur lors de la commande.");
+          }
+        });
+      }
+
+      afficherPanier();
+    </script>
+  </body>
+</html>

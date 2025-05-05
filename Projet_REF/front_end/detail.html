@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Détail du Plat</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .detail-container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .detail-container img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+      }
+
+      .detail-content {
+        padding: 20px;
+      }
+
+      .detail-content h2 {
+        margin-top: 0;
+      }
+
+      .detail-content p {
+        color: #555;
+      }
+
+      .btn-panier {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        font-size: 1em;
+        font-weight: bold;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-panier:hover {
+        background-color: #218838;
+      }
+
+      .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="detail-container" id="detail">
+      <!-- Contenu généré en JS -->
+    </div>
+
+    <a href="menu.html" class="back-link">← Retour au menu</a>
+
+    <script>
+      const plats = {
+        1: {
+          nom: "Pizza Margherita",
+          description: "Tomate, mozzarella, basilic frais.",
+          image: "https://www.aquaportail.com/pictures2112/nourriture.jpg",
+        },
+        2: {
+          nom: "Burger Maison",
+          description: "Steak haché, cheddar, oignons caramélisés.",
+          image:
+            "https://th.bing.com/th/id/OIP.bso0W6RUjvIhDlp5Y4TkxAHaE8?cb=iwp1&rs=1&pid=ImgDetMain",
+        },
+        3: {
+          nom: "Salade César",
+          description: "Poulet grillé, parmesan, croûtons.",
+          image:
+            "https://cdn.pixabay.com/photo/2017/01/22/19/20/salad-2008745_960_720.jpg",
+        },
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const plat = plats[id];
+      const container = document.getElementById("detail");
+
+      if (plat) {
+        container.innerHTML = `
+        <img src="${plat.image}" alt="${plat.nom}" />
+        <div class="detail-content">
+          <h2>${plat.nom}</h2>
+          <p>${plat.description}</p>
+          <button class="btn-panier" onclick="ajouterAuPanier(${id})">Ajouter au panier</button>
+        </div>
+      `;
+      } else {
+        container.innerHTML = "<p>Plat non trouvé.</p>";
+      }
+
+      function ajouterAuPanier(id) {
+        const plat = plats[id];
+        const panier = JSON.parse(localStorage.getItem("panier")) || [];
+
+        const index = panier.findIndex((item) => item.id === id);
+
+        if (index !== -1) {
+          // Si le plat existe déjà dans le panier, on augmente la quantité
+          panier[index].quantite += 1;
+        } else {
+          // Sinon on l’ajoute au panier
+          panier.push({
+            id: id,
+            nom: plat.nom,
+            image: plat.image,
+            prix: 2000, // <-- à ajuster si tu veux des prix variables
+            quantite: 1,
+          });
+        }
+
+        localStorage.setItem("panier", JSON.stringify(panier));
+        alert(`« ${plat.nom} » a été ajouté au panier !`);
+      }
+    </script>
+  </body>
+</html>
