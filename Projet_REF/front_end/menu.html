@@ -10,7 +10,7 @@
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: #f8f8f8;
-      padding-bottom: 60px; /* espace pour la nav bar */
+      padding-bottom: 60px;
     }
 
     .menu-container {
@@ -121,6 +121,14 @@
     <a href="#"><i class="fas fa-user"></i>Profil</a>
     <a href="#"><i class="fas fa-shopping-cart"></i>Panier</a>
   </nav>
+
+  <script>
+    // Vérifie si l'utilisateur est connecté (présence du token)
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+  </script>
 
 </body>
 </html>

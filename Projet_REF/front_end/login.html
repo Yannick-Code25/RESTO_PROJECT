@@ -113,10 +113,17 @@
         const data = await response.json();
   
         if (response.ok) {
+          // Affiche le message (optionnel)
           document.getElementById('message').textContent = data.message;
           document.getElementById('message').style.color = '#2ecc71';
-          localStorage.setItem('token', data.token); // Enregistre le token
-          // Redirection ou autre action possible ici
+  
+          // Stocke le token dans le localStorage
+          localStorage.setItem('token', data.token);
+  
+          // Redirige vers menu.html après une courte pause (facultatif)
+          setTimeout(() => {
+            window.location.href = 'menu.html';
+          }, 1000);
         } else {
           document.getElementById('message').textContent = data.message;
           document.getElementById('message').style.color = 'red';
@@ -129,6 +136,7 @@
       }
     });
   </script>
+  
   
 </body>
 </html>
