@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inscription</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Arial, sans-serif;
         background-color: #fff8f0;
         color: #333;
         display: flex;
@@ -23,122 +24,347 @@
         box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
         width: 100%;
         max-width: 400px;
+        position: relative;
       }
 
       h2 {
         text-align: center;
         color: #e67e22;
+        margin-bottom: 25px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        position: relative;
       }
 
       label {
-        font-weight: bold;
+        font-weight: 600;
         display: block;
-        margin-top: 15px;
+        margin-bottom: 8px;
+        color: #555;
       }
 
       input {
         width: 100%;
-        padding: 10px;
-        margin-top: 5px;
+        padding: 12px;
         border: 1px solid #ddd;
         border-radius: 6px;
         font-size: 14px;
+        transition: border 0.3s;
+      }
+
+      input:focus {
+        border-color: #e67e22;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
+      }
+
+      .error-input {
+        border-color: #e74c3c !important;
+      }
+
+      .help-text {
+        font-size: 12px;
+        color: #777;
+        margin-top: 4px;
+        display: block;
+      }
+
+      .error-text {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
       }
 
       button {
         width: 100%;
         background-color: #e67e22;
         color: white;
-        padding: 12px;
-        margin-top: 20px;
+        padding: 14px;
+        margin-top: 10px;
         border: none;
         border-radius: 6px;
         font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
+        transition: background 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
       }
 
       button:hover {
         background-color: #cf711c;
       }
 
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
       #message {
-        margin-top: 15px;
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: left;
+        font-weight: 500;
+        display: none;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .success-message {
+        background-color: #e8f8f0;
+        color: #27ae60;
+        border-left: 4px solid #2ecc71;
+      }
+
+      .error-message {
+        background-color: #fdecea;
+        color: #e74c3c;
+        border-left: 4px solid #e74c3c;
+      }
+
+      .message-icon {
+        margin-right: 10px;
+      }
+
+      .divider {
         text-align: center;
+        margin: 20px 0;
+        color: #999;
+        position: relative;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background-color: #eee;
+      }
+
+      .divider::before {
+        left: 0;
+      }
+
+      .divider::after {
+        right: 0;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .login-link a {
         color: #e67e22;
-        font-weight: bold;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+
+      .login-link a:hover {
+        color: #cf711c;
+        text-decoration: underline;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h2>Inscription</h2>
-      <form id="registerForm">
-        <label>Nom complet:</label>
-        <input type="text" id="nom_complet" required />
+        <h2>Inscription</h2>
+        <form id="form-register">
+            <div class="form-group">
+                <label for="nom_complet">Nom complet:</label>
+                <input type="text" id="nom_complet" required />
+                <span class="help-text">Votre nom complet comme sur la carte d'étudiant</span>
+                <span class="error-text" id="nom_complet-error"></span>
+            </div>
 
-        <label>Filière:</label>
-        <input type="text" id="filiere" required />
+            <div class="form-group">
+                <label for="filiere">Filière:</label>
+                <input type="text" id="filiere" required />
+                <span class="error-text" id="filiere-error"></span>
+            </div>
 
-        <label>Niveau:</label>
-        <input type="text" id="niveau" required />
+            <div class="form-group">
+                <label for="niveau">Niveau:</label>
+                <input type="text" id="niveau" required />
+                <span class="error-text" id="niveau-error"></span>
+            </div>
 
-        <label>Email:</label>
-        <input type="email" id="email" required />
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required />
+                <span class="help-text">Doit se terminer par @uiya.com</span>
+                <span class="error-text" id="email-error"></span>
+            </div>
 
-        <label>Mot de passe:</label>
-        <input type="password" id="password" required />
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" required />
+                <span class="help-text">Minimum 8 caractères</span>
+                <span class="error-text" id="password-error"></span>
+            </div>
 
-        <button type="submit">S'inscrire</button>
+            <button type="submit" id="submit-btn">
+                <span id="btn-text">S'inscrire</span>
+                <i id="btn-spinner" class="fas fa-spinner fa-spin" style="display: none;"></i>
+            </button>
 
-        <div style="text-align: center; margin-top: 15px">
-          <span>ou</span><br />
-          <p>Déjà un compte</p>
-          <a
-            href="login.html"
-            style="color: #e67e22; text-decoration: none; font-weight: bold"
-          >
-            Se connecter
-          </a>
-        </div>
-      </form>
-      <p id="message"></p>
+            <div class="divider">ou</div>
+
+            <div class="login-link">
+                <p>Déjà un compte? <a href="login.html">Se connecter</a></p>
+            </div>
+        </form>
+        
+        <div id="message"></div>
     </div>
 
     <script>
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('form-register');
+        const emailInput = document.getElementById('email');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const messageDiv = document.getElementById('message');
 
-          const nomComplet = document
-            .getElementById("nom_complet")
-            .value.trim();
-          const filiere = document.getElementById("filiere").value.trim();
-          const niveau = document.getElementById("niveau").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
-
-          const response = await fetch("http://localhost:3000/api/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              nomComplet,
-              filiere,
-              niveau,
-              email,
-              password,
-            }),
-          });
-
-          const result = await response.json();
-          document.getElementById("message").textContent = result.message;
-
-          if (response.ok) {
-            document.getElementById("registerForm").reset();
+        // Validation en temps réel pour l'email
+        emailInput.addEventListener('blur', function() {
+          if (!this.value.endsWith('@uiya.com')) {
+            showError('email-error', 'L\'email doit se terminer par @uiya.com');
+            this.classList.add('error-input');
+          } else {
+            hideError('email-error');
+            this.classList.remove('error-input');
           }
         });
+
+        // Validation avant soumission
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Afficher le spinner
+          btnText.textContent = 'Traitement...';
+          btnSpinner.style.display = 'block';
+          submitBtn.disabled = true;
+          
+          // Réinitialiser les messages
+          hideMessage();
+          
+          // Validation côté client
+          let isValid = true;
+          const nom_complet = document.getElementById('nom_complet').value.trim();
+          const filiere = document.getElementById('filiere').value.trim();
+          const niveau = document.getElementById('niveau').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+          
+          if (!nom_complet) {
+            showError('nom_complet-error', 'Veuillez entrer votre nom complet');
+            isValid = false;
+          }
+          
+          if (!filiere) {
+            showError('filiere-error', 'Veuillez entrer votre filière');
+            isValid = false;
+          }
+          
+          if (!niveau) {
+            showError('niveau-error', 'Veuillez entrer votre niveau');
+            isValid = false;
+          }
+          
+          if (!email.endsWith('@uiya.com')) {
+            showError('email-error', 'L\'email doit se terminer par @uiya.com');
+            isValid = false;
+          }
+          
+          if (password.length < 8) {
+            showError('password-error', 'Le mot de passe doit contenir au moins 8 caractères');
+            isValid = false;
+          }
+          
+          if (!isValid) {
+            btnText.textContent = 'S\'inscrire';
+            btnSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+            showMessage('Veuillez corriger les erreurs dans le formulaire', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch("http://localhost:3000/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                nom_complet,
+                filiere,
+                niveau,
+                email,
+                password,
+              }),
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+              showMessage(result.message || 'Inscription réussie! Redirection en cours...', 'success');
+              form.reset();
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 1500);
+            } else {
+              showMessage(result.message || 'Une erreur est survenue', 'error');
+            }
+          } catch (error) {
+            showMessage('Erreur de connexion au serveur', 'error');
+          } finally {
+            btnText.textContent = 'S\'inscrire';
+            btnSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+          }
+        });
+        
+        function showError(elementId, message) {
+          const element = document.getElementById(elementId);
+          element.textContent = message;
+          element.style.display = 'block';
+          document.getElementById(elementId.replace('-error', '')).classList.add('error-input');
+        }
+        
+        function hideError(elementId) {
+          const element = document.getElementById(elementId);
+          element.style.display = 'none';
+          document.getElementById(elementId.replace('-error', '')).classList.remove('error-input');
+        }
+        
+        function showMessage(message, type) {
+          messageDiv.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} message-icon"></i>
+            ${message}
+          `;
+          messageDiv.className = type + '-message';
+          messageDiv.style.display = 'block';
+        }
+        
+        function hideMessage() {
+          messageDiv.style.display = 'none';
+        }
+      });
     </script>
-  </body>
+</body>
 </html>

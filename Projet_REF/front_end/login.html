@@ -1,142 +1,352 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connexion</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff8f0;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background-color: #fff8f0;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
 
-    .container {
-      background-color: #fff;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-    }
+      .container {
+        background-color: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+      }
 
-    h2 {
-      text-align: center;
-      color: #e67e22;
-    }
+      h2 {
+        text-align: center;
+        color: #e67e22;
+        margin-bottom: 25px;
+      }
 
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-    }
+      .form-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+      label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+      }
 
-    button {
-      width: 100%;
-      background-color: #e67e22;
-      color: white;
-      padding: 12px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border 0.3s;
+      }
 
-    button:hover {
-      background-color: #cf711c;
-    }
+      input:focus {
+        border-color: #e67e22;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
+      }
 
-    #message {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
-  </style>
+      .error-input {
+        border-color: #e74c3c !important;
+      }
+
+      .error-text {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
+      }
+
+      button {
+        width: 100%;
+        background-color: #e67e22;
+        color: white;
+        padding: 14px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      button:hover {
+        background-color: #cf711c;
+      }
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      #message {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: left;
+        font-weight: 500;
+        display: none;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .success-message {
+        background-color: #e8f8f0;
+        color: #27ae60;
+        border-left: 4px solid #2ecc71;
+      }
+
+      .error-message {
+        background-color: #fdecea;
+        color: #e74c3c;
+        border-left: 4px solid #e74c3c;
+      }
+
+      .message-icon {
+        margin-right: 10px;
+      }
+
+      .divider {
+        text-align: center;
+        margin: 20px 0;
+        color: #999;
+        position: relative;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background-color: #eee;
+      }
+
+      .divider::before {
+        left: 0;
+      }
+
+      .divider::after {
+        right: 0;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .login-link a {
+        color: #e67e22;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+
+      .login-link a:hover {
+        color: #cf711c;
+        text-decoration: underline;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin-top: 5px;
+      }
+
+      .forgot-password a {
+        color: #777;
+        font-size: 13px;
+        text-decoration: none;
+      }
+
+      .forgot-password a:hover {
+        text-decoration: underline;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h2>Connexion</h2>
+        <form id="login_Form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required />
+                <span class="error-text" id="email-error"></span>
+            </div>
 
-  <div class="container">
-    <h2>Connexion</h2>
-    <form id="loginForm">
-      <label>Email:</label>
-      <input type="email" id="email" required>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" required />
+                <span class="error-text" id="password-error"></span>
+                <div class="forgot-password">
+                    <a href="forgot-password.html">Mot de passe oublié ?</a>
+                </div>
+            </div>
 
-      <label>Mot de passe:</label>
-      <input type="password" id="password" required>
+            <button type="submit" id="submit-btn">
+                <span id="btn-text">Se connecter</span>
+                <i id="btn-spinner" class="fas fa-spinner fa-spin" style="display: none;"></i>
+            </button>
 
-      <button type="submit">Se connecter</button>
+            <div class="divider">ou</div>
 
-      <div style="text-align: center; margin-top: 15px">
-        <span>ou</span><br />
-        <a
-          href="login.html"
-          style="color: #e67e22; text-decoration: none; font-weight: bold"
-        >
-          S'inscrire
-        </a>
-      </div>
-    </form>
-    <p id="message"></p>
-  </div>
+            <div class="login-link">
+                <p>Pas encore de compte ? <a href="register.html">S'inscrire</a></p>
+            </div>
+        </form>
+        
+        <div id="message"></div>
+    </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-  
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-  
-      try {
-        const response = await fetch('http://localhost:3000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('login_Form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const messageDiv = document.getElementById('message');
+
+        // Validation en temps réel pour l'email
+        emailInput.addEventListener('blur', function() {
+          if (!this.value.includes('@')) {
+            showError('email-error', 'Veuillez entrer une adresse email valide');
+            this.classList.add('error-input');
+          } else {
+            hideError('email-error');
+            this.classList.remove('error-input');
+          }
         });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          // Affiche le message (optionnel)
-          document.getElementById('message').textContent = data.message;
-          document.getElementById('message').style.color = '#2ecc71';
-  
-          // Stocke le token dans le localStorage
-          localStorage.setItem('token', data.token);
-  
-          // Redirige vers menu.html après une courte pause (facultatif)
-          setTimeout(() => {
-            window.location.href = 'menu.html';
-          }, 1000);
-        } else {
-          document.getElementById('message').textContent = data.message;
-          document.getElementById('message').style.color = 'red';
+
+        // Validation du mot de passe
+        passwordInput.addEventListener('input', function() {
+          if (this.value.length < 6) {
+            showError('password-error', 'Le mot de passe doit contenir au moins 6 caractères');
+          } else {
+            hideError('password-error');
+          }
+        });
+
+        // Soumission du formulaire
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Afficher le spinner
+          btnText.textContent = 'Connexion en cours...';
+          btnSpinner.style.display = 'block';
+          submitBtn.disabled = true;
+          
+          // Réinitialiser les messages
+          hideMessage();
+          
+          // Validation côté client
+          let isValid = true;
+          const email = emailInput.value.trim();
+          const password = passwordInput.value;
+          
+          if (!email.includes('@')) {
+            showError('email-error', 'Veuillez entrer une adresse email valide');
+            isValid = false;
+          }
+          
+          if (password.length < 6) {
+            showError('password-error', 'Le mot de passe doit contenir au moins 6 caractères');
+            isValid = false;
+          }
+          
+          if (!isValid) {
+            btnText.textContent = 'Se connecter';
+            btnSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+            showMessage('Veuillez corriger les erreurs dans le formulaire', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch("http://localhost:3000/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+            
+            if (response.ok && data.success && data.token && data.userId && data.email) {
+              // Stockage du token et des infos utilisateur
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("userId", data.userId);
+              localStorage.setItem("email", data.email);
+
+              showMessage('Connexion réussie! Redirection en cours...', 'success');
+              
+              setTimeout(() => {
+                window.location.href = "menu.html";
+              }, 1500);
+            } else {
+              showMessage(data.message || "Email ou mot de passe incorrect", 'error');
+            }
+          } catch (err) {
+            showMessage("Erreur réseau. Veuillez réessayer.", 'error');
+            console.error("Erreur lors de la requête :", err);
+          } finally {
+            btnText.textContent = 'Se connecter';
+            btnSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+          }
+        });
+        
+        function showError(elementId, message) {
+          const element = document.getElementById(elementId);
+          element.textContent = message;
+          element.style.display = 'block';
+          document.getElementById(elementId.replace('-error', '')).classList.add('error-input');
         }
-  
-      } catch (err) {
-        document.getElementById('message').textContent = 'Erreur réseau.';
-        document.getElementById('message').style.color = 'red';
-        console.error(err);
-      }
-    });
-  </script>
-  
-  
+        
+        function hideError(elementId) {
+          const element = document.getElementById(elementId);
+          element.style.display = 'none';
+          document.getElementById(elementId.replace('-error', '')).classList.remove('error-input');
+        }
+        
+        function showMessage(message, type) {
+          messageDiv.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} message-icon"></i>
+            ${message}
+          `;
+          messageDiv.className = type + '-message';
+          messageDiv.style.display = 'block';
+        }
+        
+        function hideMessage() {
+          messageDiv.style.display = 'none';
+        }
+      });
+    </script>
 </body>
 </html>

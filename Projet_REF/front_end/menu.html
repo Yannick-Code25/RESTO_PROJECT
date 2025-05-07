@@ -1,134 +1,541 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Menu - Mon Restaurant</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background-color: #f8f8f8;
-      padding-bottom: 60px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu - Mon Restaurant</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-    .menu-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .menu-item {
-      background-color: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .menu-item:hover {
-      transform: translateY(-5px);
-    }
-
-    .menu-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .menu-info {
-      padding: 15px;
-    }
-
-    .menu-info h3 {
-      margin: 0 0 10px;
-      font-size: 1.2em;
-    }
-
-    .menu-info p {
-      margin: 0;
-      color: #555;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #fff;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #ddd;
-      padding: 10px 0;
-      z-index: 1000;
-    }
-
-    .bottom-nav a {
-      color: #333;
-      text-align: center;
-      text-decoration: none;
-      font-size: 0.9em;
-    }
-
-    .bottom-nav i {
-      font-size: 1.5em;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    @media (max-width: 600px) {
+    <style>
+      /* ===== VARIABLES ===== */
+      :root {
+        --primary-color: #ff6b6b;
+        --secondary-color: #ff8e8e;
+        --dark-color: #333;
+        --light-color: #f8f9fa;
+        --success-color: #40c057;
+        --danger-color: #e74c3c;
+        --header-bg: #2c3e50;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+    
+      /* ===== RESET ===== */
+      * {
+        box-sizing: border-box;
+      }
+    
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #fef6f6;
+        color: var(--dark-color);
+        padding-bottom: 80px;
+      }
+    
+      /* ===== HEADER ===== */
+      .header {
+        background-color: #fef6f6;
+        color: white;
+        padding: 15px 20px;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+    
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    
+      .header-content h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #ff6b6b;
+      }
+    
+      .logout-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--danger-color);
+        font-size: 24px;
+        padding: 10px;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+    
+      .logout-btn:hover {
+        transform: scale(1.1);
+        color: var(--primary-color);
+      }
+    
+      /* ===== MENU ===== */
+      .menu-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 25px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+    
+      .menu-item {
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        position: relative;
+      }
+    
+      .menu-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      }
+    
+      .menu-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: var(--transition);
+      }
+    
+      .menu-item:hover img {
+        opacity: 0.9;
+      }
+    
+      .menu-info {
+        padding: 20px;
+      }
+    
       .menu-info h3 {
-        font-size: 1em;
+        margin: 0 0 10px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--dark-color);
       }
-
+    
       .menu-info p {
-        font-size: 0.85em;
+        margin: 8px 0;
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.4;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="menu-container">
-    <a href="detail.html?id=1" class="menu-item">
-      <img src="https://www.aquaportail.com/pictures2112/nourriture.jpg" alt="Pizza Margherita" />
-      <div class="menu-info">
-        <h3>Pizza Margherita</h3>
-        <p>Tomate, mozzarella, basilic frais.</p>
+    
+      .menu-info .prix {
+        font-weight: bold;
+        margin: 15px 0;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+      }
+    
+      .menu-info button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+    
+      .menu-info button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+      }
+    
+      .menu-info button i {
+        font-size: 1rem;
+      }
+    
+      .badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: var(--success-color);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        z-index: 1;
+      }
+    
+      /* ===== BOTTOM NAVIGATION ===== */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #fff;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        padding: 12px 0;
+        z-index: 1000;
+      }
+    
+      .bottom-nav a {
+        color: #888;
+        text-align: center;
+        text-decoration: none;
+        font-size: 0.8rem;
+        position: relative;
+        transition: var(--transition);
+        flex: 1;
+      }
+    
+      .bottom-nav a.active {
+        color: var(--primary-color);
+      }
+    
+      .bottom-nav i {
+        font-size: 1.4rem;
+        display: block;
+        margin-bottom: 5px;
+        transition: var(--transition);
+      }
+    
+      .bottom-nav a.active i {
+        transform: translateY(-5px);
+      }
+    
+      .status-indicator {
+        width: 10px;
+        height: 10px;
+        background: var(--success-color);
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        right: 22px;
+        border: 2px solid white;
+      }
+    
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: 15px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        min-width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+      }
+    
+      /* ===== TOAST / MESSAGE ===== */
+      #message {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--success-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 50px;
+        display: none;
+        z-index: 9999;
+        box-shadow: var(--shadow);
+        font-weight: 500;
+        animation: fadeIn 0.3s ease;
+      }
+    
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+    
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .menu-container {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 20px;
+          padding: 15px;
+        }
+    
+        .menu-info h3 {
+          font-size: 1.1rem;
+        }
+    
+        .menu-info p {
+          font-size: 0.85rem;
+        }
+    
+        .menu-info .prix {
+          font-size: 1.1rem;
+        }
+      }
+    
+      @media (max-width: 600px) {
+        .header-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+    
+        .logout-btn {
+          align-self: flex-end;
+          font-size: 22px;
+        }
+    
+        .header-content h1 {
+          font-size: 1.4rem;
+        }
+    
+        .bottom-nav i {
+          font-size: 1.2rem;
+        }
+    
+        .menu-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-content">
+        <h1>Notre Menu</h1>
+        <button class="logout-btn" onclick="logout()" title="Déconnexion">
+          <i class="fas fa-person-walking-arrow-right"></i>
+        </button>
       </div>
-    </a>
+    </div>
 
-    <a href="detail.html?id=2" class="menu-item">
-      <img src="https://th.bing.com/th/id/OIP.bso0W6RUjvIhDlp5Y4TkxAHaE8?cb=iwp1&rs=1&pid=ImgDetMain" alt="Burger Maison" />
-      <div class="menu-info">
-        <h3>Burger Maison</h3>
-        <p>Steak haché, cheddar, oignons caramélisés.</p>
+    <div id="message"></div>
+
+    <div class="menu-container">
+      <div class="menu-item">
+        <div class="badge">Nouveau</div>
+        <img
+          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+          alt="Pizza Margherita"
+        />
+        <div class="menu-info">
+          <h3>Pizza Margherita</h3>
+          <p>
+            Tomate fraîche, mozzarella di bufala, basilic frais et huile d'olive
+            extra vierge.
+          </p>
+          <p class="prix">8,90 €</p>
+          <button data-id="1" data-nom="Pizza Margherita" data-prix="8.9">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
       </div>
-    </a>
 
-    <a href="detail.html?id=3" class="menu-item">
-      <img src="https://cdn.pixabay.com/photo/2017/01/22/19/20/salad-2008745_960_720.jpg" alt="Salade César" />
-      <div class="menu-info">
-        <h3>Salade César</h3>
-        <p>Poulet grillé, parmesan, croûtons.</p>
+      <div class="menu-item">
+        <img
+          src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+          alt="Burger Maison"
+        />
+        <div class="menu-info">
+          <h3>Burger Gourmet</h3>
+          <p>
+            Steak haché charolais, cheddar affiné, oignons caramélisés, bacon
+            croustillant et sauce maison.
+          </p>
+          <p class="prix">12,50 €</p>
+          <button data-id="2" data-nom="Burger Gourmet" data-prix="12.5">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
       </div>
-    </a>
-  </div>
 
-  <nav class="bottom-nav">
-    <a href="#"><i class="fas fa-utensils"></i>Menu</a>
-    <a href="#"><i class="fas fa-user"></i>Profil</a>
-    <a href="panier.html"><i class="fas fa-shopping-cart"></i>Panier</a>
-  </nav>
+      <div class="menu-item">
+        <div class="badge">Healthy</div>
+        <img
+          src="https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+          alt="Salade César"
+        />
+        <div class="menu-info">
+          <h3>Salade César</h3>
+          <p>
+            Poulet grillé, parmesan Reggiano, croûtons maison, feuilles de
+            romaine et sauce césar crémeuse.
+          </p>
+          <p class="prix">9,50 €</p>
+          <button data-id="3" data-nom="Salade César" data-prix="9.5">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
 
-  <script>
-    // Redirection si non connecté
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "login.html";
-    }
-  </script>
-</body>
+      <div class="menu-item">
+        <img
+          src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+          alt="Pâtes Carbonara"
+        />
+        <div class="menu-info">
+          <h3>Pâtes Carbonara</h3>
+          <p>
+            Spaghetti al dente, pancetta croustillante, sauce crémeuse au jaune
+            d'œuf et parmesan râpé.
+          </p>
+          <p class="prix">11,90 €</p>
+          <button data-id="4" data-nom="Pâtes Carbonara" data-prix="11.9">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <div class="badge">Chef</div>
+        <img
+          src="https://images.unsplash.com/photo-1559847844-5315695dadae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+          alt="Dessert du jour"
+        />
+        <div class="menu-info">
+          <h3>Dessert du Chef</h3>
+          <p>
+            Sélection changeante selon les saisons et l'inspiration de notre
+            pâtissier.
+          </p>
+          <p class="prix">7,50 €</p>
+          <button data-id="5" data-nom="Dessert du Chef" data-prix="7.5">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="#" class="active"><i class="fas fa-utensils"></i>Menu</a>
+      <a href="profil.html">
+        <i class="fas fa-user"></i>Profil
+        <span class="status-indicator" title="Connecté"></span>
+      </a>
+      <a href="panier.html">
+        <i class="fas fa-shopping-cart"></i>Panier
+        <span class="cart-badge" id="cart-count">0</span>
+      </a>
+    </nav>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Récupération du token et userId avec l'email depuis le localStorage
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+        const email = localStorage.getItem("email");
+
+        // Initialisation du panier
+        let panier = JSON.parse(localStorage.getItem("panier")) || [];
+        updateCartCount();
+
+        // Gestion des événements pour les boutons "Ajouter au panier"
+        document.querySelectorAll(".menu-info button").forEach((button) => {
+          button.addEventListener("click", function () {
+            const produit_id = this.getAttribute("data-id");
+            const nom = this.getAttribute("data-nom");
+            const prix_unitaire = parseFloat(this.getAttribute("data-prix"));
+
+            ajouterAuPanier(produit_id, nom, prix_unitaire, userId);
+
+            // Animation du bouton
+            this.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+            this.style.backgroundColor = "var(--success-color)";
+            setTimeout(() => {
+              this.innerHTML = '<i class="fas fa-cart-plus"></i> Ajouter';
+              this.style.backgroundColor = "var(--primary-color)";
+            }, 1000);
+          });
+        });
+
+        // Fonction pour ajouter un article au panier
+        function ajouterAuPanier(produit_id, nom, prix_unitaire, userId) {
+          // Vérifier si l'article est déjà dans le panier
+          const articleExistant = panier.find(
+            (item) => item.produit_id === produit_id && item.userId === userId
+          );
+
+          if (articleExistant) {
+            // Si l'article existe déjà, augmenter la quantité
+            articleExistant.quantite += 1;
+            showMessage(`Quantité augmentée pour ${nom}`);
+          } else {
+            // Sinon, ajouter un nouvel article
+            panier.push({
+              produit_id,
+              nom,
+              prix_unitaire,
+              quantite: 1,
+              userId, // Associer l'article à l'utilisateur
+              dateAjout: new Date().toISOString(),
+            });
+            showMessage(`${nom} ajouté au panier`);
+          }
+
+          // Mettre à jour le localStorage et le badge du panier
+          localStorage.setItem("panier", JSON.stringify(panier));
+          updateCartCount();
+        }
+
+        // Fonction pour mettre à jour le compteur du panier
+        function updateCartCount() {
+          // Compter seulement les articles de l'utilisateur courant
+          const count = panier
+            .filter((item) => item.userId === userId)
+            .reduce((total, item) => total + item.quantite, 0);
+          document.getElementById("cart-count").textContent = count;
+        }
+
+        // Fonction pour afficher un message temporaire
+        function showMessage(msg) {
+          const message = document.getElementById("message");
+          message.textContent = msg;
+          message.style.display = "block";
+          setTimeout(() => {
+            message.style.opacity = "1";
+          }, 10);
+
+          setTimeout(() => {
+            message.style.opacity = "0";
+            setTimeout(() => {
+              message.style.display = "none";
+            }, 300);
+          }, 2000);
+        }
+      });
+      function logout() {
+        // Supprimer le token ou tout autre élément de session (exemple avec localStorage)
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        // Rediriger vers la page de connexion
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
 </html>
