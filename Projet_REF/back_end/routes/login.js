@@ -1,45 +1,62 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const pool = require('../db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const pool = require("../db");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const result = await pool.query('SELECT * FROM utilisateurs WHERE email = $1', [email]);
+    // Récupérer l'utilisateur par email
+    const result = await pool.query(
+      "SELECT id, nom_complet, email, filiere, niveau, mot_de_passe FROM utilisateurs WHERE email = $1",
+      [email]
+    );
 
     if (result.rows.length === 0) {
-      return res.status(400).json({ message: "Email ou mot de passe incorrect." });
+      return res
+        .status(401)
+        .json({ success: false, message: "Email ou mot de passe incorrect." });
     }
 
     const utilisateur = result.rows[0];
-    const isMatch = await bcrypt.compare(password, utilisateur.mot_de_passe);
 
+    // Vérifier le mot de passe
+    const isMatch = await bcrypt.compare(password, utilisateur.mot_de_passe);
     if (!isMatch) {
-      return res.status(400).json({ message: "Email ou mot de passe incorrect." });
+      return res
+        .status(401)
+        .json({ success: false, message: "Email ou mot de passe incorrect." });
     }
 
+    // Générer le token JWT
     const token = jwt.sign(
-      {
-        id: utilisateur.id, // ou utilisateur.id_utilisateur selon ta table
-        email: utilisateur.email,
-        nom: utilisateur.nom_complet
-      },
+      { id: utilisateur.id, email: utilisateur.email },
       JWT_SECRET,
-      { expiresIn: '72h' }
+      { expiresIn: "24h" }
     );
-    // console.log(token);
+   
+    // Réponse
     res.status(200).json({
+      success: true,
       message: `Bienvenue, ${utilisateur.nom_complet}`,
-      token
+      token,
+      userId : utilisateur.id,
+      email: utilisateur.email,
+      utilisateur: {
+        id: utilisateur.id,
+        nom_complet: utilisateur.nom_complet,
+        email: utilisateur.email,
+        filiere: utilisateur.filiere,
+        niveau: utilisateur.niveau,
+      },
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Erreur du serveur." });
+    res.status(500).json({ success: false, message: "Erreur du serveur." });
   }
 });
 
