@@ -5,7 +5,7 @@ const registerRoutes = require('./routes/register'); // Ajout de la route regist
 const commandeRoutes = require('./routes/order');
 require('dotenv').config();
 const pool = require('./db');
-
+const router = express.Router();
 
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
@@ -105,6 +105,26 @@ app.post('/reset-password', async (req, res) => {
 });
 
 //-----------------------------------------
+
+// Route pour afficher toutes les commandes par utilisateur avec les prix
+app.get('/commandes', async (req, res) => {
+  try {
+      const result = await pool.query(`
+          SELECT u.nom_complet, c.id AS commande_id, c.total, c.methode_paiement, c.date_commande, 
+                 cp.produit_id, cp.quantite, cp.prix_unitaire
+          FROM utilisateurs u
+          JOIN commandes c ON u.id = c.utilisateur_id
+          JOIN commande_produits cp ON c.id = cp.commande_id;
+      `);
+      res.json(result.rows);
+  } catch (error) {
+      console.error('Erreur lors de la récupération des commandes:', error);
+      res.status(500).send('Erreur serveur');
+    }
+});
+
+
+//-------------------------------------
 
 // Démarrage du serveur
 app.listen(PORT, () => {

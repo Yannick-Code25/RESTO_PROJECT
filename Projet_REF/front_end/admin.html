@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Commandes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .loader {
+            display: none;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Commandes</h1>
+    <div class="loader" id="loader">Chargement...</div>
+    <table id="commandes-table">
+        <thead>
+            <tr>
+                <th>Nom Complet</th>
+                <th>ID Commande</th>
+                <th>Total</th>
+                <th>Méthode de Paiement</th>
+                <th>Date Commande</th>
+                <th>ID Produit</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données des commandes seront insérées ici -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fonction pour récupérer les commandes depuis l'API backend
+        async function getCommandes() {
+            const loader = document.getElementById('loader');
+            const tableBody = document.querySelector('#commandes-table tbody');
+
+            // Affichage du loader pendant le chargement des données
+            loader.style.display = 'block';
+
+            try {
+                // Appel de l'API backend pour récupérer les commandes
+                const response = await fetch('http://localhost:3000/commandes'); // Assure-toi que l'URL est correcte
+                const data = await response.json();
+
+                // Vider le corps de la table avant d'ajouter les nouvelles données
+                tableBody.innerHTML = '';
+
+                // Parcours des données et ajout dans la table
+                data.forEach(commande => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${commande.nom_complet}</td>
+                        <td>${commande.commande_id}</td>
+                        <td>${commande.total} €</td>
+                        <td>${commande.methode_paiement}</td>
+                        <td>${commande.date_commande}</td>
+                        <td>${commande.produit_id}</td>
+                        <td>${commande.quantite}</td>
+                        <td>${commande.prix_unitaire} €</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Erreur lors du chargement des commandes:', error);
+            } finally {
+                // Cacher le loader après avoir chargé les données
+                loader.style.display = 'none';
+            }
+        }
+
+        // Appeler la fonction pour récupérer les commandes au chargement de la page
+        window.onload = getCommandes;
+    </script>
+</body>
+</html>

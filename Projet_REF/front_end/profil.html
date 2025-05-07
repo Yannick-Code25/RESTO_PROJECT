@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --dark-color: #2b2d42;
+            --light-color: #f8f9fa;
+            --success-color: #4cc9f0;
+            --error-color: #f72585;
+            --warning-color: #f8961e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .profile-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #f0f2f5;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .profile-email {
+            color: #666;
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+
+        .profile-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-item i {
+            width: 30px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .orders-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .orders-section:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-card:hover {
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .order-total {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .order-method {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background-color: #f0f7ff;
+            color: var(--primary-color);
+        }
+
+        .order-products {
+            margin-top: 15px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .product-price {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-quantity {
+            background-color: #f5f5f5;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+        }
+
+        .no-orders i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            color: #888;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.8rem;
+            position: relative;
+            transition: var(--transition);
+            flex: 1;
+        }
+
+        .bottom-nav a.active {
+            color: var(--primary-color);
+        }
+
+        .bottom-nav i {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+
+        .bottom-nav a.active i {
+            transform: translateY(-5px);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: var(--success-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            right: 22px;
+            border: 2px solid white;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        @media (max-width: 992px) {
+            .profile-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .order-header {
+                flex-direction: column;
+            }
+            
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-image {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mon Profil</h1>
+    </div>
+
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-card">
+                <img src="https://ui-avatars.com/api/?name=John+Doe&background=4361ee&color=fff&size=200" alt="Avatar" class="profile-avatar">
+                <h2 class="profile-name" id="profile-name">John Doe</h2>
+                <p class="profile-email" id="profile-email">john.doe@example.com</p>
+                
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span id="profile-filiere">Informatique</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-layer-group"></i>
+                        <span id="profile-niveau">Licence 3</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Compte vérifié</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-section">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i> Historique des Commandes
+                </h2>
+                
+                <div class="orders-list" id="orders-list">
+                    <!-- Les commandes seront ajoutées ici dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="menu.html"><i class="fas fa-utensils"></i>Menu</a>
+        <a href="profil.html" class="active">
+            <i class="fas fa-user"></i>Profil
+            <span class="status-indicator" title="Connecté"></span>
+        </a>
+        <a href="panier.html">
+            <i class="fas fa-shopping-cart"></i>Panier
+            <span class="cart-badge" id="cart-count">0</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Récupération des infos utilisateur depuis le localStorage
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("userId");
+            const email = localStorage.getItem("email");
+            
+            // Données des produits (simulées - en production, vous les récupéreriez depuis votre API)
+            const productsData = {
+                "1": { "name": "Pizza Margherita", "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" },
+                "2": { "name": "Burger Gourmet", "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" },
+                "3": { "name": "Salade César", "image": "https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" },
+                "4": { "name": "Pâtes Carbonara", "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" },
+                "5": { "name": "Dessert du Chef", "image": "https://images.unsplash.com/photo-1559847844-5315695dadae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" }
+            };
+
+            // Données simulées de l'utilisateur (en production, vous les récupéreriez depuis votre API)
+            const userData = {
+                id: userId,
+                nom_complet: "John Doe",
+                filiere: "Informatique",
+                niveau: "Licence 3",
+                email: email || "john.doe@example.com"
+            };
+
+            // Données simulées des commandes (en production, vous les récupéreriez depuis votre API)
+            const ordersData = [
+                {
+                    id: "CMD-12345",
+                    date_commande: "2023-05-15T14:30:00",
+                    total: 28.40,
+                    methode_paiement: "Carte bancaire",
+                    produits: [
+                        { produit_id: "1", quantite: 2, prix_unitaire: 8.90 },
+                        { produit_id: "3", quantite: 1, prix_unitaire: 9.50 }
+                    ]
+                },
+                {
+                    id: "CMD-12344",
+                    date_commande: "2023-05-10T18:15:00",
+                    total: 12.50,
+                    methode_paiement: "PayPal",
+                    produits: [
+                        { produit_id: "2", quantite: 1, prix_unitaire: 12.50 }
+                    ]
+                }
+            ];
+
+            // Afficher les informations utilisateur
+            displayUserInfo(userData);
+            
+            // Afficher les commandes
+            displayOrders(ordersData);
+
+            // Fonction pour afficher les informations utilisateur
+            function displayUserInfo(user) {
+                document.getElementById("profile-name").textContent = user.nom_complet;
+                document.getElementById("profile-email").textContent = user.email;
+                document.getElementById("profile-filiere").textContent = user.filiere;
+                document.getElementById("profile-niveau").textContent = user.niveau;
+                
+                // Mettre à jour l'avatar avec les initiales
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.nom_complet)}&background=4361ee&color=fff&size=200`;
+                document.querySelector(".profile-avatar").src = avatarUrl;
+            }
+
+            // Fonction pour afficher les commandes
+            function displayOrders(orders) {
+                const ordersList = document.getElementById("orders-list");
+                
+                if (orders.length === 0) {
+                    ordersList.innerHTML = `
+                        <div class="no-orders">
+                            <i class="fas fa-box-open"></i>
+                            <p>Aucune commande passée pour le moment</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                ordersList.innerHTML = "";
+                
+                orders.forEach(order => {
+                    const orderDate = new Date(order.date_commande);
+                    const formattedDate = orderDate.toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const orderElement = document.createElement("div");
+                    orderElement.className = "order-card";
+                    orderElement.innerHTML = `
+                        <div class="order-header">
+                            <div>
+                                <span class="order-id">${order.id}</span>
+                                <span class="order-date">${formattedDate}</span>
+                            </div>
+                            <div>
+                                <span class="order-total">${order.total.toFixed(2)} €</span>
+                                <span class="order-method">${order.methode_paiement}</span>
+                            </div>
+                        </div>
+                        <div class="order-products" id="products-${order.id}">
+                            <!-- Les produits seront ajoutés ici -->
+                        </div>
+                    `;
+                    
+                    ordersList.appendChild(orderElement);
+                    
+                    // Afficher les produits de cette commande
+                    const productsContainer = document.getElementById(`products-${order.id}`);
+                    order.produits.forEach(product => {
+                        const productData = productsData[product.produit_id];
+                        const productElement = document.createElement("div");
+                        productElement.className = "product-item";
+                        productElement.innerHTML = `
+                            <img src="${productData.image}" alt="${productData.name}" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name">${productData.name}</div>
+                                <div class="product-price">${product.prix_unitaire.toFixed(2)} €</div>
+                            </div>
+                            <div class="product-quantity">${product.quantite}</div>
+                        `;
+                        productsContainer.appendChild(productElement);
+                    });
+                });
+            }
+
+            // En production, vous feriez une requête API pour récupérer les vraies données
+            /*
+            async function fetchUserData() {
+                try {
+                    const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const user = await response.json();
+                    displayUserInfo(user);
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des données utilisateur", error);
+                }
+            }
+
+            async function fetchUserOrders() {
+                try {
+                    const response = await fetch(`http://localhost:3000/orders?user_id=${userId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const orders = await response.json();
+                    displayOrders(orders);
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des commandes", error);
+                }
+            }
+
+            fetchUserData();
+            fetchUserOrders();
+            */
+        });
+    </script>
+</body>
+</html>
